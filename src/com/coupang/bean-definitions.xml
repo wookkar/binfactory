@@ -1,0 +1,4 @@
+<beans>
+	<bean name="sample1" class="com.coupang.beans.Sample1" scope="PROTOTYPE"></bean>
+	<bean name="sample2" class="com.coupang.beans.Sample2" scope="SINGLETON"></bean>
+</beans>
