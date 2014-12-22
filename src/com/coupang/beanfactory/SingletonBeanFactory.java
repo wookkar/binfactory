@@ -10,7 +10,9 @@ public class SingletonBeanFactory implements BeanFactory{
 	public void addNewBean(BeanDefinition beanDefinition){
 		try {
 			Class<?> forName = Class.forName(beanDefinition.getClassFullName());
-			beans.put(beanDefinition, forName.newInstance());
+			Constructor<?> declaredConstructor = forName.getDeclaredConstructor();
+			declaredConstructor.setAccessible(true);
+			beans.put(beanDefinition, declaredConstructor.newInstance());
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -20,6 +22,10 @@ public class SingletonBeanFactory implements BeanFactory{
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}; 

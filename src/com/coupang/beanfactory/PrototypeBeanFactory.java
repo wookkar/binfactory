@@ -1,5 +1,7 @@
 package com.coupang.beanfactory;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class PrototypeBeanFactory implements BeanFactory{
@@ -17,7 +19,9 @@ public class PrototypeBeanFactory implements BeanFactory{
 			try {
 				Class<?> forName = Class.forName(beanDefinition.getClassFullName());
 				if(forName.equals(type)){
-					return (T) forName.newInstance();
+					Constructor<?> declaredConstructor = forName.getDeclaredConstructor();
+					declaredConstructor.setAccessible(true);
+					return (T) declaredConstructor.newInstance();
 				}
 				
 			} catch (ClassNotFoundException e) {
@@ -29,8 +33,12 @@ public class PrototypeBeanFactory implements BeanFactory{
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
-        }
+		}
 		return null;
 	}
 
@@ -41,7 +49,9 @@ public class PrototypeBeanFactory implements BeanFactory{
 			try {
 				if(beanDefinition.getBeanName().equals(beanName)){
 					Class<?> forName = Class.forName(beanDefinition.getClassFullName());
-					return forName.newInstance();
+					Constructor<?> declaredConstructor = forName.getDeclaredConstructor();
+					declaredConstructor.setAccessible(true);
+					return declaredConstructor.newInstance();
 				}
 				
 			} catch (ClassNotFoundException e) {
@@ -53,8 +63,12 @@ public class PrototypeBeanFactory implements BeanFactory{
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
-        }
+		}
 		return null;
 	}
 
